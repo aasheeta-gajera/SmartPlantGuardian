@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Options - Smart Plant Monitor</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --drawer-width: 280px;
+      --primary-color: #2c3e50;
+      --secondary-color: #34495e;
+      --accent-color: #3498db;
+    }
+
+    body {
+      background-color: #f8f9fa;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Drawer Styles */
+    .drawer {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: var(--drawer-width);
+      height: 100vh;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+
+    .drawer-header {
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 20px;
+    }
+
+    .drawer-header h3 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      padding: 12px 15px;
+      display: block;
+      border-radius: 8px;
+      margin: 5px 0;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background-color: var(--accent-color);
+      color: white;
+    }
+
+    .nav-link i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+
+    /* Main Content Styles */
+    .main-content {
+      margin-left: var(--drawer-width);
+      padding: 20px;
+    }
+
+    .options-card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: 25px;
+      margin: 20px;
+    }
+
+    .option-group {
+      margin-bottom: 30px;
+    }
+
+    .option-group h3 {
+      color: var(--primary-color);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #eee;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--primary-color);
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1em;
+    }
+
+    .form-control:focus {
+      border-color: var(--accent-color);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+
+    .btn-save {
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-save:hover {
+      background-color: #2980b9;
+    }
+
+    .alert {
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .alert-success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .alert-error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+  </style>
+</head>
+<body>
+  <!-- Drawer -->
+  <div class="drawer">
+    <div class="drawer-header">
+      <h3>🌿 Plant Monitor</h3>
+    </div>
+    <nav>
+      <a href="/" class="nav-link">
+        <i class="fas fa-home"></i> Dashboard
+      </a>
+      <a href="/analytics" class="nav-link">
+        <i class="fas fa-chart-line"></i> Analytics
+      </a>
+      <a href="/sensors" class="nav-link">
+        <i class="fas fa-microchip"></i> Sensors
+      </a>
+      <a href="/options" class="nav-link active">
+        <i class="fas fa-sliders-h"></i> Options
+      </a>
+      <a href="/help" class="nav-link">
+        <i class="fas fa-question-circle"></i> Help
+      </a>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="options-card">
+            <h2 class="text-center mb-4">Sensor Options</h2>
+            
+            <div id="alertSuccess" class="alert alert-success">
+              Settings saved successfully!
+            </div>
+            
+            <div id="alertError" class="alert alert-error">
+              Error saving settings. Please try again.
+            </div>
+
+            <form id="optionsForm">
+              <div class="option-group">
+                <h3>Threshold Settings</h3>
+                
+                <div class="form-group">
+                  <label for="moistThres">Soil Moisture Threshold (%)</label>
+                  <input type="number" id="moistThres" name="moistThres" class="form-control" min="0" max="100">
+                </div>
+
+                <div class="form-group">
+                  <label for="tempThres">Temperature Threshold (°C)</label>
+                  <input type="number" id="tempThres" name="tempThres" class="form-control" step="0.1">
+                </div>
+
+                <div class="form-group">
+                  <label for="humidThres">Humidity Threshold (%)</label>
+                  <input type="number" id="humidThres" name="humidThres" class="form-control" min="0" max="100">
+                </div>
+
+                <div class="form-group">
+                  <label for="lightThres">Light Level Threshold</label>
+                  <input type="number" id="lightThres" name="lightThres" class="form-control" min="0" max="10">
+                </div>
+              </div>
+
+              <div class="option-group">
+                <h3>System Settings</h3>
+                
+                <div class="form-group">
+                  <label for="updateInterval">Update Interval (seconds)</label>
+                  <input type="number" id="updateInterval" name="updateInterval" class="form-control" min="30" max="3600">
+                </div>
+
+                <div class="form-group">
+                  <label for="alertThreshold">Alert Threshold (count)</label>
+                  <input type="number" id="alertThreshold" name="alertThreshold" class="form-control" min="1" max="10">
+                </div>
+              </div>
+
+              <div class="text-center">
+                <button type="submit" class="btn-save">
+                  <i class="fas fa-save"></i> Save Settings
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-database.js"></script>
+  <script>
+    // Initialize Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyAoOO_yVaAUfwc_wBlVM5BClNqeKdvehMA",
+      authDomain: "aitools-7593a.firebaseapp.com",
+      databaseURL: "https://aitools-7593a-default-rtdb.firebaseio.com",
+      projectId: "aitools-7593a",
+      storageBucket: "aitools-7593a.firebasestorage.app",
+      messagingSenderId: "14698939491",
+      appId: "1:14698939491:web:3f5492e24a31c86f746456",
+      measurementId: "G-WWTJPP89ZD"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    // Firebase real-time updates
+    const database = firebase.database();
+    const optionsRef = database.ref('smartPlantMonitor/options');
+
+    // Load current options
+    optionsRef.once('value').then((snapshot) => {
+      const options = snapshot.val() || {};
+      document.getElementById('moistThres').value = options.moistThres || 0;
+      document.getElementById('tempThres').value = options.tempThres || 25;
+      document.getElementById('humidThres').value = options.humidThres || 50;
+      document.getElementById('lightThres').value = options.lightThres || 5;
+      document.getElementById('updateInterval').value = options.updateInterval || 30;
+      document.getElementById('alertThreshold').value = options.alertThreshold || 3;
+    });
+
+    // Save options
+    document.getElementById('optionsForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const options = {
+        moistThres: parseFloat(document.getElementById('moistThres').value),
+        tempThres: parseFloat(document.getElementById('tempThres').value),
+        humidThres: parseFloat(document.getElementById('humidThres').value),
+        lightThres: parseInt(document.getElementById('lightThres').value),
+        updateInterval: parseInt(document.getElementById('updateInterval').value),
+        alertThreshold: parseInt(document.getElementById('alertThreshold').value)
+      };
+
+      optionsRef.set(options)
+        .then(() => {
+          document.getElementById('alertSuccess').style.display = 'block';
+          document.getElementById('alertError').style.display = 'none';
+          setTimeout(() => {
+            document.getElementById('alertSuccess').style.display = 'none';
+          }, 3000);
+        })
+        .catch((error) => {
+          document.getElementById('alertError').style.display = 'block';
+          document.getElementById('alertSuccess').style.display = 'none';
+          setTimeout(() => {
+            document.getElementById('alertError').style.display = 'none';
+          }, 3000);
+        });
+    });
+  </script>
+</body>
+</html> 

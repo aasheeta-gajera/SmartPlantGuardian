@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Help - Smart Plant Monitor</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --drawer-width: 280px;
+      --primary-color: #2c3e50;
+      --secondary-color: #34495e;
+      --accent-color: #3498db;
+    }
+
+    body {
+      background-color: #f8f9fa;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Drawer Styles */
+    .drawer {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: var(--drawer-width);
+      height: 100vh;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+
+    .drawer-header {
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 20px;
+    }
+
+    .drawer-header h3 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      padding: 12px 15px;
+      display: block;
+      border-radius: 8px;
+      margin: 5px 0;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background-color: var(--accent-color);
+      color: white;
+    }
+
+    .nav-link i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+
+    /* Main Content Styles */
+    .main-content {
+      margin-left: var(--drawer-width);
+      padding: 20px;
+    }
+
+    .help-card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: 25px;
+      margin: 20px;
+    }
+
+    .help-section {
+      margin-bottom: 30px;
+    }
+
+    .help-section h3 {
+      color: var(--primary-color);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #eee;
+    }
+
+    .help-item {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 10px;
+    }
+
+    .help-item h4 {
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+
+    .help-item p {
+      margin: 0;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .help-item ul {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+
+    .help-item li {
+      margin-bottom: 5px;
+      color: #666;
+    }
+
+    .help-item code {
+      background: #e9ecef;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <!-- Drawer -->
+  <div class="drawer">
+    <div class="drawer-header">
+      <h3>🌿 Plant Monitor</h3>
+    </div>
+    <nav>
+      <a href="/" class="nav-link">
+        <i class="fas fa-home"></i> Dashboard
+      </a>
+      <a href="/analytics" class="nav-link">
+        <i class="fas fa-chart-line"></i> Analytics
+      </a>
+      <a href="/sensors" class="nav-link">
+        <i class="fas fa-microchip"></i> Sensors
+      </a>
+      <a href="/options" class="nav-link">
+        <i class="fas fa-sliders-h"></i> Options
+      </a>
+      <a href="/help" class="nav-link active">
+        <i class="fas fa-question-circle"></i> Help
+      </a>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="help-card">
+            <h2 class="text-center mb-4">Help & Documentation</h2>
+            
+            <div class="help-section">
+              <h3>Getting Started</h3>
+              
+              <div class="help-item">
+                <h4>Dashboard Overview</h4>
+                <p>The dashboard displays real-time sensor data from your plant monitoring system. All sensor readings are updated automatically every 30 seconds.</p>
+              </div>
+
+              <div class="help-item">
+                <h4>Navigation</h4>
+                <p>The system has five main sections:</p>
+                <ul>
+                  <li><strong>Dashboard:</strong> View real-time sensor data</li>
+                  <li><strong>Analytics:</strong> View historical data trends</li>
+                  <li><strong>Sensors:</strong> Detailed information about each sensor</li>
+                  <li><strong>Options:</strong> Configure system settings and thresholds</li>
+                  <li><strong>Help:</strong> This documentation</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="help-section">
+              <h3>Sensor Data</h3>
+              
+              <div class="help-item">
+                <h4>Available Sensors</h4>
+                <p>The system monitors the following parameters:</p>
+                <ul>
+                  <li>Temperature (°C)</li>
+                  <li>Pressure (hPa)</li>
+                  <li>Soil Moisture (%)</li>
+                  <li>Humidity (%)</li>
+                  <li>Light Level</li>
+                  <li>CO2 Level (ppm)</li>
+                  <li>Battery Level (V)</li>
+                  <li>WiFi Signal Strength (dBm)</li>
+                  <li>GPS Location</li>
+                </ul>
+              </div>
+
+              <div class="help-item">
+                <h4>Data Updates</h4>
+                <p>The system automatically updates sensor data every 30 seconds. You can see the last update time displayed on the dashboard.</p>
+              </div>
+            </div>
+
+            <div class="help-section">
+              <h3>Configuration</h3>
+              
+              <div class="help-item">
+                <h4>Setting Thresholds</h4>
+                <p>You can configure various thresholds in the Options section:</p>
+                <ul>
+                  <li>Soil Moisture Threshold (0-100%)</li>
+                  <li>Temperature Threshold (°C)</li>
+                  <li>Humidity Threshold (0-100%)</li>
+                  <li>Light Level Threshold (0-10)</li>
+                  <li>Update Interval (30-3600 seconds)</li>
+                  <li>Alert Threshold (1-10)</li>
+                </ul>
+              </div>
+
+              <div class="help-item">
+                <h4>Saving Changes</h4>
+                <p>After modifying any settings, click the "Save Settings" button to apply your changes. A success message will appear when the settings are saved successfully.</p>
+              </div>
+            </div>
+
+            <div class="help-section">
+              <h3>Troubleshooting</h3>
+              
+              <div class="help-item">
+                <h4>Common Issues</h4>
+                <ul>
+                  <li>If data is not updating, check your internet connection</li>
+                  <li>If sensors show incorrect values, try recalibrating them</li>
+                  <li>If the system is not responding, check the battery level</li>
+                  <li>If WiFi signal is weak, consider moving the device closer to the router</li>
+                </ul>
+              </div>
+
+              <div class="help-item">
+                <h4>Error Codes</h4>
+                <p>The system uses error codes to indicate specific issues:</p>
+                <ul>
+                  <li><code>0</code>: No error</li>
+                  <li><code>1</code>: Sensor reading error</li>
+                  <li><code>2</code>: Communication error</li>
+                  <li><code>3</code>: Battery low</li>
+                  <li><code>4</code>: WiFi connection lost</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html> 

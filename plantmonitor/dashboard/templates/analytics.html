@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Plant Analytics</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --drawer-width: 280px;
+      --primary-color: #2c3e50;
+      --secondary-color: #34495e;
+      --accent-color: #3498db;
+    }
+
+    body {
+      background-color: #f8f9fa;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Drawer Styles */
+    .drawer {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: var(--drawer-width);
+      height: 100vh;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+
+    .drawer-header {
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 20px;
+    }
+
+    .drawer-header h3 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      padding: 12px 15px;
+      display: block;
+      border-radius: 8px;
+      margin: 5px 0;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background-color: var(--accent-color);
+      color: white;
+    }
+
+    .nav-link i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+
+    /* Main Content Styles */
+    .main-content {
+      margin-left: var(--drawer-width);
+      padding: 20px;
+    }
+
+    .chart-card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: 25px;
+      margin: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .chart-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .last-update {
+      font-size: 0.9em;
+      color: #666;
+      text-align: right;
+      margin-bottom: 20px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 50px;
+      font-size: 1.2em;
+      color: #666;
+    }
+
+    .loading i {
+      font-size: 2em;
+      margin-bottom: 10px;
+      color: var(--primary-color);
+    }
+  </style>
+</head>
+<body>
+  <!-- Drawer -->
+  <div class="drawer">
+    <div class="drawer-header">
+      <h3>🌿 Plant Monitor</h3>
+    </div>
+    <nav>
+      <a href="/" class="nav-link">
+        <i class="fas fa-home"></i> Dashboard
+      </a>
+      <a href="/analytics" class="nav-link active">
+        <i class="fas fa-chart-line"></i> Analytics
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fas fa-history"></i> History
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fas fa-cog"></i> Settings
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fas fa-question-circle"></i> Help
+      </a>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="chart-card">
+            <h3>Temperature Trend</h3>
+            <div class="last-update" id="tempLastUpdate"></div>
+            <canvas id="temperatureChart"></canvas>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="chart-card">
+            <h3>Soil Moisture Trend</h3>
+            <div class="last-update" id="soilLastUpdate"></div>
+            <canvas id="soilChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-database.js"></script>
+  <script>
+    // Initialize Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyAoOO_yVaAUfwc_wBlVM5BClNqeKdvehMA",
+      authDomain: "aitools-7593a.firebaseapp.com",
+      databaseURL: "https://aitools-7593a-default-rtdb.firebaseio.com",
+      projectId: "aitools-7593a",
+      storageBucket: "aitools-7593a.firebasestorage.app",
+      messagingSenderId: "14698939491",
+      appId: "1:14698939491:web:3f5492e24a31c86f746456",
+      measurementId: "G-WWTJPP89ZD"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    // Firebase real-time updates
+    const database = firebase.database();
+    const plantDataRef = database.ref('smartPlantMonitor');
+
+    // Chart configurations
+    const temperatureChart = new Chart(document.getElementById('temperatureChart'), {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'Temperature (°C)',
+          data: [],
+          borderColor: '#e74c3c',
+          tension: 0.4,
+          fill: false
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: false
+          }
+        }
+      }
+    });
+
+    const soilChart = new Chart(document.getElementById('soilChart'), {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'Soil Moisture',
+          data: [],
+          borderColor: '#27ae60',
+          tension: 0.4,
+          fill: false
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: false
+          }
+        }
+      }
+    });
+
+    function updateLastUpdateTime() {
+      const now = new Date();
+      document.getElementById('tempLastUpdate').textContent = 
+        `Last updated: ${now.toLocaleTimeString()}`;
+      document.getElementById('soilLastUpdate').textContent = 
+        `Last updated: ${now.toLocaleTimeString()}`;
+    }
+
+    function updateCharts(data) {
+      if (!data) return;
+
+      // Get the latest 10 data points
+      const plantKeys = Object.keys(data).slice(-10);
+      const timestamps = [];
+      const temperatures = [];
+      const soilMoistures = [];
+
+      plantKeys.forEach(key => {
+        const plantData = data[key];
+        timestamps.push(plantData.ts);
+        temperatures.push(plantData.temp);
+        soilMoistures.push(plantData.soilM);
+      });
+
+      // Update temperature chart
+      temperatureChart.data.labels = timestamps;
+      temperatureChart.data.datasets[0].data = temperatures;
+      temperatureChart.update();
+
+      // Update soil moisture chart
+      soilChart.data.labels = timestamps;
+      soilChart.data.datasets[0].data = soilMoistures;
+      soilChart.update();
+
+      updateLastUpdateTime();
+    }
+
+    // Listen for real-time updates
+    plantDataRef.on('value', (snapshot) => {
+      const data = snapshot.val();
+      updateCharts(data);
+    });
+
+    // Update every 30 seconds
+    setInterval(() => {
+      plantDataRef.once('value').then((snapshot) => {
+        const data = snapshot.val();
+        updateCharts(data);
+      });
+    }, 30000);
+  </script>
+</body>
+</html>

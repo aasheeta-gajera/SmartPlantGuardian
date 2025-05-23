@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sensor Information - Smart Plant Monitor</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --drawer-width: 280px;
+      --primary-color: #2c3e50;
+      --secondary-color: #34495e;
+      --accent-color: #3498db;
+    }
+
+    body {
+      background-color: #f8f9fa;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Drawer Styles */
+    .drawer {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: var(--drawer-width);
+      height: 100vh;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+
+    .drawer-header {
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 20px;
+    }
+
+    .drawer-header h3 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      padding: 12px 15px;
+      display: block;
+      border-radius: 8px;
+      margin: 5px 0;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background-color: var(--accent-color);
+      color: white;
+    }
+
+    .nav-link i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+
+    /* Main Content Styles */
+    .main-content {
+      margin-left: var(--drawer-width);
+      padding: 20px;
+    }
+
+    .sensor-card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: 25px;
+      margin: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .sensor-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .sensor-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .sensor-item {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .sensor-item i {
+      font-size: 2em;
+      margin-right: 20px;
+      color: var(--primary-color);
+      width: 40px;
+      text-align: center;
+    }
+
+    .sensor-details h4 {
+      margin: 0 0 5px 0;
+      color: var(--primary-color);
+    }
+
+    .sensor-details p {
+      margin: 0;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <!-- Drawer -->
+  <div class="drawer">
+    <div class="drawer-header">
+      <h3>🌿 Plant Monitor</h3>
+    </div>
+    <nav>
+      <a href="/" class="nav-link">
+        <i class="fas fa-home"></i> Dashboard
+      </a>
+      <a href="/analytics" class="nav-link">
+        <i class="fas fa-chart-line"></i> Analytics
+      </a>
+      <a href="/sensors" class="nav-link active">
+        <i class="fas fa-microchip"></i> Sensors
+      </a>
+      <a href="/options" class="nav-link">
+        <i class="fas fa-sliders-h"></i> Options
+      </a>
+      <a href="/help" class="nav-link">
+        <i class="fas fa-question-circle"></i> Help
+      </a>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-md-10">
+          <div class="sensor-card">
+            <h2 class="text-center mb-4">Sensor Information</h2>
+            
+            <div class="sensor-info">
+              <div class="sensor-item">
+                <i class="fas fa-temperature-high"></i>
+                <div class="sensor-details">
+                  <h4>Temperature Sensor</h4>
+                  <p>Measures ambient temperature in Celsius</p>
+                </div>
+              </div>
+
+              <div class="sensor-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <div class="sensor-details">
+                  <h4>Pressure Sensor</h4>
+                  <p>Measures atmospheric pressure in hPa</p>
+                </div>
+              </div>
+
+              <div class="sensor-item">
+                <i class="fas fa-seedling"></i>
+                <div class="sensor-details">
+                  <h4>Soil Moisture Sensor</h4>
+                  <p>Measures soil moisture level in percentage</p>
+                </div>
+              </div>
+
+              <div class="sensor-item">
+                <i class="fas fa-tint"></i>
+                <div class="sensor-details">
+                  <h4>Humidity Sensor</h4>
+                  <p>Measures relative humidity in percentage</p>
+                </div>
+              </div>
+
+              <div class="sensor-item">
+                <i class="fas fa-sun"></i>
+                <div class="sensor-details">
+                  <h4>Light Sensor</h4>
+                  <p>Measures ambient light level</p>
+                </div>
+              </div>
+
+              <div class="sensor-item">
+                <i class="fas fa-wind"></i>
+                <div class="sensor-details">
+                  <h4>CO2 Sensor</h4>
+                  <p>Measures carbon dioxide level in ppm</p>
+                </div>
+              </div>
+
+              <div class="sensor-item">
+                <i class="fas fa-battery-half"></i>
+                <div class="sensor-details">
+                  <h4>Battery Monitor</h4>
+                  <p>Monitors battery voltage level</p>
+                </div>
+              </div>
+
+              <div class="sensor-item">
+                <i class="fas fa-wifi"></i>
+                <div class="sensor-details">
+                  <h4>WiFi Signal</h4>
+                  <p>Measures WiFi signal strength in dBm</p>
+                </div>
+              </div>
+
+              <div class="sensor-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="sensor-details">
+                  <h4>GPS Location</h4>
+                  <p>Provides latitude and longitude coordinates</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html> 
